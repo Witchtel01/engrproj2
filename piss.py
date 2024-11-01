@@ -1,4 +1,8 @@
 from typing import List
+
+slurryFlowRate = (835200 * 0.00378541) / (24 * 60 * 60)
+
+
 class Operation:
     def __init__(self, energyConsumption : int, efficiency : float, cost : int):
         self.cons = energyConsumption
@@ -6,9 +10,8 @@ class Operation:
         self.cost = cost
 
 class Pump:
-    def __init__(self, efficiency, height, cost):
+    def __init__(self, efficiency, cost):
         self.efficiency = efficiency
-        self.height = height
         self.cost = cost
         
 class Pipe:
@@ -31,7 +34,7 @@ class Valve:
         self.cost = cost
 
 class Site:
-    def __init__(self, pipeList : List[Pipe], pumpList : List[Pump], bendList : List[Bend], valveList : List[Valve]):
+    def __init__(self, pipeList : List[Pipe], pumpList : List[Pump], bendList : List[Bend], valveList : List[Valve], cost: int):
         pass
 
 
@@ -62,3 +65,77 @@ filterList = [
     Operation(50350, 0.9, 280000),
     Operation(51000, 0.98, 480000)
 ]
+
+pumpList = [
+    Pump(0.8, 390000),
+    Pump(0.83, 460000),
+    Pump(0.86, 560000),
+    Pump(0.89, 670000),
+    Pump(0.92, 808000)
+]
+
+
+def getPurity(fermenter : Operation, distiller : Operation, dehydration : Operation, filter : Operation) -> dict:
+    sugarIn = slurryFlowRate * 0.20 * 1599
+    fiberIn = slurryFlowRate * 0.20 * 1311
+    waterIn = slurryFlowRate * 0.60 * 997
+    ethanolIn = 0
+    
+    
+    ethanolOut = 0.51 * sugarIn * fermenter.efficiency
+    sugarOut = sugarIn * (1 - fermenter.efficiency)
+    waterOut = waterIn
+    fiberOut = fiberIn
+    co2Waste = 0.49 * sugarIn * fermenter.efficiency
+    
+    
+    waterIn = waterOut
+    sugarIn = sugarOut
+    fiberIn = fiberOut
+    ethanolIn = ethanolOut
+
+    
+    fiberOut = fiberIn * (1 - filter.efficiency)
+    waterOut = waterIn
+    sugarOut = sugarIn
+    ethanolOut = ethanolIn
+    fiberWaste = fiberIn * filter.efficiency
+    
+    
+    waterIn = waterOut
+    sugarIn = sugarOut
+    fiberIn = fiberOut
+    ethanolIn = ethanolOut
+    
+    
+    waterOut = (waterIn * ethanolIn * ((1 / distiller.efficiency) - 1)) / (waterIn + sugarIn + fiberIn)
+    sugarOut = (sugarIn * ethanolIn * ((1/distiller.efficiency) - 1)) / (waterIn + sugarIn + fiberIn)
+    fiberOut = (fiberIn * ethanolIn * ((1/distiller.efficiency) - 1)) / (waterIn + sugarIn + fiberIn)
+    fiberWaste += fiberIn - fiberOut
+    sugarWaste = sugarIn - sugarOut
+    waterWaste = waterIn - waterOut
+
+
+    waterIn = waterOut
+    sugarIn = sugarOut
+    fiberIn = fiberOut
+    ethanolIn = ethanolOut
+    
+    
+    waterOut = waterIn * (1 - dehydration.efficiency)
+    ethanolOut = ethanolIn
+    sugarOut = sugarIn
+    fiberOut = fiberIn
+    waterWaste += waterIn * dehydration.efficiency
+    
+    return {
+        "sugarOut" : sugarOut,
+        "ethanolOut" : ethanolOut,
+        "fiberOut" : fiberOut,
+        "waterOut" : waterOut,
+        "fiberWaste" : fiberWaste,
+        "waterWaste" : waterWaste,
+        "sugarWaste" : sugarWaste,
+        "CO2Waste" : co2Waste
+    }
+
