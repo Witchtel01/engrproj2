@@ -2,7 +2,6 @@ with open("data.txt") as f:
     data = [eval(_.strip()) for _ in f.readlines() 
             if not _.strip() == ""]
 
-print(len(data))
 
 
 
@@ -26,7 +25,6 @@ for i in range(len(data)):
         index = i
         minNormal = normalized[i]
 print(data[index])
-print(index)
 
 def get_loop_values(index):
     """Given an index, returns the indicies of the nested loop
@@ -102,5 +100,3 @@ print(f"Ethanol per day: "+\
 print(f"Energy ROI: {21160177.2*data[index
         ].get("ethanolOut")/data[index
         ].get("energyConsumed")}")
-
-print(f"Cost: {l}")
