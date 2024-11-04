@@ -81,24 +81,63 @@ filterList = [
 ]
 
 
-def electricalEnergyIn(fermenter : Operation, distiller : Operation, dehydration : Operation, _filter : Operation, pump : Operation) -> float:
-    return sum(fermenter.cons, distiller.cons, dehydration.cons, _filter.cons, pump.cons)
 
 def kineticEnergyIn(pipe : Pipe):
-    # KE = 1/2mv^2
+    """Calculates eIn for the pumpLoss function
+
+    Args:
+        pipe (Pipe): The pipe to use in calculations
+
+    Returns:
+        float: The calculated kinetic energy
+    """    
     return 0.5 * massFlowRate * ((slurryFlowRate / (((pipe.diameter / 2) ** 2) * math.pi)) ** 2)
 
 def pumpLoss(pump : Operation, eIn : float):
+    """Calculates energy lost in the pump
+
+    Args:
+        pump (Operation): The pump to use in calculations
+        eIn (float): The amount of energy inputted
+
+    Returns:
+        float: The calculated energy lost
+    """    
     return (1 - pump.efficiency) * eIn
 
 def pipeFriction(pipe : Pipe, density : float, flowRate : float):
+    """Calculates energy lost to pipe friction
+
+    Args:
+        pipe (Pipe): The pipe to use in calculations
+        density (float): The density of liquid in the pipe
+        flowRate (float): The current flow rate in the pipe
+
+    Returns:
+        float: The calculated energy lost
+    """    
     hdw = pipe.frictionFactor * (8 / (9.80 * math.pi ** 2)) * ((pipe.length * flowRate ** 2) / (pipe.diameter ** 5))
     return density * flowRate * hdw
 
 def bendLoss():
+    """Calculates energy lost in bends
+
+    Returns:
+        int: Returns 0 because no need to implement bends if there are none in the first place
+    """    
     return 0
 
 def valveLoss(valve : Valve, density : float, flowRate : float):
+    """Calculates energy lost in valves
+
+    Args:
+        valve (Valve): The valve object to use
+        density (float): The density of liquid in the valve
+        flowRate (float): The current flow rate in the valve
+
+    Returns:
+        float: The calculated energy lost
+    """    
     hdw = valve.flowCoefficient * (flowRate / (math.pi * (valve.diameter / 2) ** 2) ** 2) / (2 * 9.80)
     return density * flowRate * hdw
 
@@ -110,6 +149,18 @@ def calculate(
         _filter : Operation,
         site : Site
     ) -> dict:
+    """Calculates a dictionary of all important values given a certain state
+
+    Args:
+        fermenter (Operation): The fermenter to use in calculations
+        distiller (Operation): The distiller to use in calculations
+        dehydration (Operation): The dehydrater to use in calculations
+        _filter (Operation): The filter to use in calculations
+        site (Site): The site description to use in calculations
+
+    Returns:
+        dict: Has multiple values in key-value pairs
+    """
     
     totalEnergyConsumed = 0
     sugarIn = slurryFlowRate * 0.20 * 1599
@@ -139,7 +190,6 @@ def calculate(
     sugarIn = sugarOut
     fiberIn = fiberOut
     ethanolIn = ethanolOut
-    
     
     
     
@@ -267,8 +317,8 @@ for fermenter in fermenterList:
                                     Valve(2, universalDiameter)
                                 )
                                 calc = calculate(fermenter, distiller, dehydrater, filt, site)
-                                file.write(str(calc)+"\n\n")
-                                purityFile.write(str(calc.get("purity"))+"\n\n")
+                                file.write(str(calc)+"\n")
+                                purityFile.write(str(calc.get("purity"))+"\n")
                                 bar.next()
 
 file.close()
