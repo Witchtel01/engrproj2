@@ -56,7 +56,8 @@ def get_loop_values(index):
     return loop_values
 
 # print index
-print(get_loop_values(index))
+l = get_loop_values(index)
+print(l)
 
 
 
@@ -81,3 +82,12 @@ print(get_loop_values(index))
 # )
 # print(calculate(fermenterList[1], distillerList[1],\
     # dehydrationList[3], filterList[2], site))
+
+
+
+
+# Print Formatted Output
+print(f"Fermenter {l[0]+1}, Distiller {l[1]+1}, "+\
+    f"Dehydrater {l[2]+1}, Filter {l[3]+1}, Pipe Quality {l[4]+1},"+\
+        f" Diameter {l[5]+1}, Pump Quality {l[6]+1}, Valve Quality"+\
+            f" {l[7]+1}")
