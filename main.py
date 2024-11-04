@@ -387,8 +387,8 @@ def calculate(
 
 
 # Open output files
-file = open("piss.txt", "w")
-purityFile = open("piss2.txt", "w")
+file = open("data.txt", "w")
+purityFile = open("purity.txt", "w")
 
 
 # Progress widgets
