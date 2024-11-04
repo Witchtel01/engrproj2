@@ -87,7 +87,20 @@ print(l)
 
 
 # Print Formatted Output
-print(f"Fermenter {l[0]+1}, Distiller {l[1]+1}, "+\
-    f"Dehydrater {l[2]+1}, Filter {l[3]+1}, Pipe Quality {l[4]+1},"+\
-        f" Diameter {l[5]+1}, Pump Quality {l[6]+1}, Valve Quality"+\
-            f" {l[7]+1}")
+print(f"Fermenter {l[0]+1}")
+print(f"Distiller {l[1]+1}")
+print(f"Dehydrater {l[2]+1}")
+print(f"Filter {l[3]+1}")
+print(f"Pipe Quality {l[4]+1}")
+print(f"Diameter {l[5]+1}")
+print(f"Pump Quality {l[6]+1}")
+print(f"Valve Quality {l[7]+1}")
+
+# Simple calculations:
+print(f"Ethanol per day: "+\
+    f"{data[index].get("ethanolOut")*86400}")
+print(f"Energy ROI: {21160177.2*data[index
+        ].get("ethanolOut")/data[index
+        ].get("energyConsumed")}")
+
+print(f"Cost: {l}")

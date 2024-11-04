@@ -14,10 +14,10 @@ class Operation:
         """Operation Class
 
         Args:
-            energyConsumption (float): Energy consumed in kJ/m^3
+            energyConsumption (float): Energy consumed in kWh/day
             efficiency (float): Efficiency coefficient
             cost (float): Cost in $ per m^3
-        """        
+        """
         self.cons = energyConsumption
         self.efficiency = efficiency
         self.cost = cost
@@ -96,7 +96,7 @@ class Site:
             pump (Pump): Which pump the site uses
             valve (Valve): Which valve will be used in\
                 calculations
-        """        
+        """
         self.pipeList = pipeList
         self.pump = pump
         self.valve = valve
