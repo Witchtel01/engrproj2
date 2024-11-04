@@ -97,6 +97,8 @@ print(f"Valve Quality {l[7]+1}")
 # Simple calculations:
 print(f"Ethanol per day: "+\
     f"{data[index].get("ethanolOut")*86400}")
+print(f"Energy per day: "+\
+    f"{data[index].get("ethanolOut")*21160177.2}")
 print(f"Energy ROI: {21160177.2*data[index
         ].get("ethanolOut")/data[index
         ].get("energyConsumed")}")
