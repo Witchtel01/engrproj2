@@ -44,7 +44,7 @@ def get_loop_values(index):
     return loop_values
 print(get_loop_values(index))
 
-from piss import (Operation, Pipe, Pump, Site, Valve, calculate,
+from piss import (Pipe, Pump, Site, Valve, calculate,
                   dehydrationList, distillerList, fermenterList, filterList)
 
 pipeQuality = range(6)
@@ -55,7 +55,5 @@ site = Site(
     [Pipe(pipeQuality[5], universalDiameter[5], _) for _ in [10.78, 1.53, 8.62, 1.53, 3.05]],
     Pump(pumpQuality[0], 27),
     Valve(2, universalDiameter[5])
-    
-    
 )
 print(calculate(fermenterList[1], distillerList[1], dehydrationList[3], filterList[2], site))
