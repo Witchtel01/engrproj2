@@ -4,7 +4,9 @@ from typing import List
 import progressbar
 
 # Calculate inital constants
-slurryGallonsPerDay = 835200
+
+# Use 835200 as input
+slurryGallonsPerDay = float(input("How much slurry per day (gal/day)? "))
 slurryFlowRate = (slurryGallonsPerDay * 0.00378541) / (24 * 60 * 60)
 massFlowRate = slurryFlowRate * (1599 * 0.20 + 0.2 * 1311 + 0.60 * 977)
 
